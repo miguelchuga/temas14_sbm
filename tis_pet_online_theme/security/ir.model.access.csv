@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_homepage_category_public,homepage_category,model_homepage_category,,1,0,0,0
+access_homepage_category_designer,homepage_category,model_homepage_category,website.group_website_designer,1,1,1,1
+
+access_homepage_slider_public,access_homepage_slider,model_homepage_slider,,1,0,0,0
+access_homepage_slider_designer,access_homepage_slider,model_homepage_slider,website.group_website_designer,1,1,1,1
+
+access_homepage_product_public,access_homepage_product,model_homepage_product,,1,0,0,0
+access_homepage_product_designer,access_homepage_product,model_homepage_product,website.group_website_designer,1,1,1,1
+
+access_homepage_full_banner_public,access_homepage_full_banner,model_homepage_full_banner,,1,0,0,0
+access_homepage_full_banner_designer,access_homepage_full_banner,model_homepage_full_banner,website.group_website_designer,1,1,1,1
+
+
+access_homepage_half_banner_public,access_homepage_half_banner,model_homepage_half_banner,,1,0,0,0
+access_homepage_half_banner_designer,access_homepage_half_banner,model_homepage_half_banner,website.group_website_designer,1,1,1,1

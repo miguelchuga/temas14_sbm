@@ -1,0 +1,211 @@
+<odoo>
+    <data>
+        <menuitem id="menu_pet_online_shop" name="Pet Online Shop"
+                  parent="website.menu_website_configuration"
+                  sequence="15"
+                  groups="website.group_website_designer"/>
+
+        <record id="homepage_category_tree_view" model="ir.ui.view">
+            <field name="name">homepage.category.tree</field>
+            <field name="model">homepage.category</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Homepage Category" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="category_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_homepage_category_action" model="ir.actions.act_window">
+            <field name="name">Homepage Category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">homepage.category</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add menu on homepage.
+                </p>
+                <p>
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_homepage_category"
+                  action="menu_homepage_category_action"
+                  parent="menu_pet_online_shop" sequence="1"/>
+
+        <record id="homepage_slider_form_view" model="ir.ui.view">
+            <field name="name">homepage.slider.form</field>
+            <field name="model">homepage.slider</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <form string="Homepage Slider">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="image" widget='image' class="oe_avatar"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="homepage_slider_tree_view" model="ir.ui.view">
+            <field name="name">homepage.slider.tree</field>
+            <field name="model">homepage.slider</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Homepage Slider">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_homepage_slider_action" model="ir.actions.act_window">
+            <field name="name">Homepage Slider</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">homepage.slider</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add slider on homepage.
+                </p>
+                <p>
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_homepage_slider"
+                  action="menu_homepage_slider_action"
+                  parent="menu_pet_online_shop" sequence="1"/>
+
+        <record id="homepage_half_banner_form_view" model="ir.ui.view">
+            <field name="name">homepage.half.banner.form</field>
+            <field name="model">homepage.half.banner</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <form string="Homepage Banner">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="heading"/>
+                                <field name="caption"/>
+                            </group>
+                            <group>
+                                <field name="image" widget='image' class="oe_avatar"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="homepage_half_banner_tree_view" model="ir.ui.view">
+            <field name="name">homepage.half.banner.tree</field>
+            <field name="model">homepage.half.banner</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Homepage Half Banner">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_homepage_half_banner_action" model="ir.actions.act_window">
+            <field name="name">Homepage Half Banner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">homepage.half.banner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add banner on homepage.
+                </p>
+                <p>
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_homepage_half_banner"
+                  action="menu_homepage_half_banner_action"
+                  parent="menu_pet_online_shop" sequence="6"/>
+
+
+        <record id="homepage_product_tree_view" model="ir.ui.view">
+            <field name="name">homepage.product.tree</field>
+            <field name="model">homepage.product</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Homepage Product" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="product_tmpl_id"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_homepage_product_action" model="ir.actions.act_window">
+            <field name="name">Homepage Product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">homepage.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add best rated products.
+                </p>
+                <p>
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_homepage_product"
+                  action="menu_homepage_product_action"
+                  parent="menu_pet_online_shop" sequence="4"/>
+
+        <record id="homepage_full_banner_form_view" model="ir.ui.view">
+            <field name="name">homepage.full.banner.form</field>
+            <field name="model">homepage.full.banner</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <form string="Homepage Banner">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="image" widget='image' class="oe_avatar"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="homepage_full_banner_tree_view" model="ir.ui.view">
+            <field name="name">homepage.full.banner.tree</field>
+            <field name="model">homepage.full.banner</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Homepage Full Banner">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="menu_homepage_full_banner_action" model="ir.actions.act_window">
+            <field name="name">Homepage Full Banner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">homepage.full.banner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to add banner on homepage.
+                </p>
+                <p>
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_homepage_full_banner"
+                  action="menu_homepage_full_banner_action"
+                  parent="menu_pet_online_shop" sequence="6"/>
+    </data>
+</odoo>

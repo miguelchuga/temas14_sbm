@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="petonline_assets" inherit_id="website.assets_frontend" name="Website Assets">
+            <xpath expr="//link[last()]" position="after">
+                <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&amp;display=swap"
+                      rel="stylesheet"/>
+                <!--                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/bootstrap.min.css"/>-->
+                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/font-awesome.min.css"
+                      type="text/css"/>
+                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/elegant-icons.css"
+                      type="text/css"/>
+                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/owl.carousel.min.css"
+                      type="text/css"/>
+                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/slicknav.min.css" type="text/css"/>
+                <link rel="stylesheet" href="/tis_pet_online_theme/static/src/css/style.css" type="text/css"/>
+            </xpath>
+            <xpath expr="//script[last()]" position="after">
+                <!--                <script src="/tis_petonline_theme_new/static/src/js/jquery-3.3.1.min.js"></script>-->
+                <script src="/tis_pet_online_theme/static/src/js/bootstrap.min.js"></script>
+                <script src="/tis_pet_online_theme/static/src/js/jquery.slicknav.js"></script>
+                <script src="/tis_pet_online_theme/static/src/js/owl.carousel.min.js"></script>
+                <!--                <script src="/tis_petonline_theme_new/static/src/js/main.js"></script>-->
+            </xpath>
+
+            <xpath expr="." position="inside">
+                <script>
+                    function testFn(){
+                    $(".humberger__menu__wrapper").addClass("show__humberger__menu__wrapper");
+                    $(".humberger__menu__overlay").addClass("active");
+                    $("body").addClass("over_hid");
+                    $(".mobile-menu").slicknav({
+                    prependTo: '#mobile-menu-wrap',
+                    allowParentLinks: true
+                    });
+                    }
+                    function closeMenu(){
+                    $(".humberger__menu__wrapper").removeClass("show__humberger__menu__wrapper");
+                    $(".humberger__menu__overlay").removeClass("active");
+                    $("body").removeClass("over_hid");
+                    }
+                    console.log('script works');
+
+
+                </script>
+            </xpath>
+        </template>
+        <template id="website_petonline_header" inherit_id="portal.frontend_layout"
+                  name="Website Petonline Header">
+            <xpath expr="//header" position="replace">
+                <div onClick="closeMenu()" class="humberger__menu__overlay"></div>
+                <div class="humberger__menu__wrapper">
+                    <div class="humberger__menu__logo">
+                        <a t-att-href="res_company.website">
+                            <span t-field="res_company.logo" t-options="{'widget': 'image'}"
+                                  t-att-alt="'Logo of %s' % res_company.name"
+                                  t-att-title="res_company.name"/>
+                        </a>
+                    </div>
+                    <div class="humberger__menu__cart">
+                        <ul>
+                            <li>
+                                <t t-if="request.website.viewref('website_sale_wishlist.add_to_wishlist').active">
+                                    <t t-set='wishcount'
+                                       t-value="len(request.env['product.wishlist'].current())"/>
+                                    <li class="nav-item o_wsale_my_wish" style="display: inline-block;"
+                                        t-att-style="not wishcount and 'display:none;'">
+                                        <a href="/shop/wishlist" class="nav-link">
+                                            <i class="fa fa-heart"></i>
+                                            <sup t-attf-class="my_wish_quantity o_animate_blink badge badge-primary">
+                                                <t t-esc='wishcount'/>
+                                            </sup>
+                                        </a>
+                                    </li>
+                                </t>
+                                <!--                                <a href="#">-->
+                                <!--                                    <i class="fa fa-heart"></i>-->
+                                <!--                                    <span>1</span>-->
+                                <!--                                </a>-->
+                            </li>
+                            <li>
+                                <t t-set="website_sale_order" t-value="website.sale_get_order()"/>
+                                <li class="nav-item divider d-none"/>
+                                <li t-attf-class="nav-item o_wsale_my_cart #{'' if website_sale_order and website_sale_order.cart_quantity else 'd-none'}">
+                                    <a href="/shop/cart" class="nav-link">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        <sup t-attf-class="my_cart_quantity badge badge-primary"
+                                             t-esc="website_sale_order and website_sale_order.cart_quantity or ''"/>
+                                    </a>
+                                </li>
+                            </li>
+                        </ul>
+                        <div class="header__cart__price">item:
+                            <span class="monetary_field">
+                                <t t-esc="website_sale_order.amount_total"/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="humberger__menu__widget">
+                        <div class="header__top__right__language">
+                            <!--                            <img src="/tis_pet_online_theme/static/src/img/language.png" alt=""/>-->
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul class="js_language_selector mb0 list-inline"
+                                t-if="(request and request.is_frontend_multilang and len(languages) &gt; 1) or (website and (editable or translatable))">
+                                <li class="list-inline-item">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                                type="button"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="true">
+                                            <span t-esc="list(filter(lambda lg : lg[0] == lang, languages))[0][2].split('/').pop()"/>
+                                            <span class="caret ml4"/>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu"
+                                             style="background-color:rgb(255, 255, 255);">
+                                            <t t-foreach="languages" t-as="lg">
+                                                <a t-att-href="url_for(request.httprequest.path + '?' + keep_query(), lang_code=lg[0])"
+                                                   class="dropdown-item js_change_lang"
+                                                   t-att-data-url_code="lg[1]">
+                                                    <t t-esc="lg[2].split('/').pop()"/>
+                                                </a>
+                                            </t>
+                                            <t t-set="url_return"
+                                               t-value="quote_plus(url_for('', '[lang]') + '?' + keep_query())"/>
+                                            <a class="d-none d-sm-block" style="color:#1f1515;"
+                                               t-attf-href="/web#action=base.action_view_base_language_install&amp;website_id=#{website.id if website else ''}&amp;url_return=#{url_return}">
+                                                <i class="fa fa-plus-circle"/>
+                                                Add a language...
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <div class="authorization-link" data-label="or"
+                                 t-if="user_id._is_public()">
+                                <a href="/web/login">Sign in</a>
+                            </div>
+                            <div class="dropdown" t-ignore="true"
+                                 t-if="not user_id._is_public()">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <b>
+                                        <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"
+                                              class="d-sm-inline"/>
+                                        <span class="caret"></span>
+                                    </b>
+                                </a>
+                                <ul class="dropdown-menu js_usermenu" role="menu"
+                                    style="top: 15% !important; left: -112px !important;">
+                                    <li class="dropdown-item">
+                                        <a href="/my/home" role="menuitem">My Account</a>
+                                    </li>
+                                    <li class="dropdown-item" id="o_logout">
+                                        <a t-attf-href="/web/session/logout?redirect=/"
+                                           role="menuitem">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="humberger__menu__nav mobile-menu">
+                        <ul>
+                            <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                <t t-call="website.submenu">
+                                    <t t-set="item_class" t-value="'nav-item'"/>
+                                    <t t-set="link_class" t-value="'nav-link'"/>
+                                </t>
+                            </t>
+
+                        </ul>
+                    </nav>
+                    <div id="mobile-menu-wrap"></div>
+                    <div class="header__top__right__social">
+                        <ul>
+                            <li class="ts-facebook">
+                                <a t-att-href="website.social_facebook"
+                                   t-if="website.social_facebook">
+                                    <i class="fa fa-facebook"></i>
+                                </a>
+                            </li>
+                            <li class="ts-twitter">
+                                <a t-att-href="website.social_twitter"
+                                   t-if="website.social_twitter">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+
+                            </li>
+                            <li class="ts-instagram">
+                                <a t-att-href="website.social_instagram"
+                                   t-if="website.social_instagram">
+                                    <i class="fa fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li class="ts-youtube-play">
+                                <a t-att-href="website.social_youtube"
+                                   t-if="website.social_youtube">
+                                    <i class="fa fa-youtube"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="humberger__menu__contact">
+                        <ul>
+                            <li>
+                                <i class="fa fa-envelope">
+                                    <span t-esc="res_company.email"/>
+                                </i>
+
+                            </li>
+                            <li>Free Shipping for all Order of $99</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Humberger End -->
+
+                <!-- Header Section Begin -->
+                <header class="header">
+                    <div class="header__top">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="header__top__left">
+                                        <ul>
+                                            <li>
+                                                <i class="fa fa-envelope"></i>
+                                                <span t-field="res_company.email"/>
+                                            </li>
+                                            <li>Free Shipping for all Order of $99</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="header__top__right">
+                                        <div class="header__top__right__social">
+                                            <ul>
+                                                <li class="ts-facebook">
+                                                    <a t-att-href="website.social_facebook"
+                                                       t-if="website.social_facebook">
+                                                        <i class="fa fa-facebook"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="ts-twitter">
+                                                    <a t-att-href="website.social_twitter"
+                                                       t-if="website.social_twitter">
+                                                        <i class="fa fa-twitter"></i>
+                                                    </a>
+
+                                                </li>
+                                                <li class="ts-instagram">
+                                                    <a t-att-href="website.social_instagram"
+                                                       t-if="website.social_instagram">
+                                                        <i class="fa fa-instagram"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="ts-youtube-play">
+                                                    <a t-att-href="website.social_youtube"
+                                                       t-if="website.social_youtube">
+                                                        <i class="fa fa-youtube"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="header__top__right__language">
+                                            <!--                                            <img src="/tis_petonline_theme_new/static/src/img/language.png"-->
+                                            <!--                                                 alt=""/>-->
+                                            <button class="btn btn-sm dropdown-toggle"
+                                                    type="button"
+                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="true">
+                                                <span t-esc="list(filter(lambda lg : lg[0] == lang, languages))[0][2].split('/').pop()"/>
+                                                <span class="caret ml4"/>
+                                            </button>
+<!--                                            <span class="arrow_carrot-down"></span>-->
+                                            <ul class="js_language_selector mb0 list-inline"
+                                                t-if="(request and request.is_frontend_multilang and len(languages) &gt; 1) or (website and (editable or translatable))">
+                                                <li class="list-inline-item">
+                                                    <div class="dropdown">
+
+                                                        <div class="dropdown-menu" role="menu"
+                                                             style="background-color:rgb(255, 255, 255);">
+                                                            <t t-foreach="languages" t-as="lg">
+                                                                <a t-att-href="url_for(request.httprequest.path + '?' + keep_query(), lang_code=lg[0])"
+                                                                   class="dropdown-item js_change_lang"
+                                                                   t-att-data-url_code="lg[1]">
+                                                                    <t t-esc="lg[2].split('/').pop()"/>
+                                                                </a>
+                                                            </t>
+                                                            <t t-set="url_return"
+                                                               t-value="quote_plus(url_for('', '[lang]') + '?' + keep_query())"/>
+                                                            <a class="d-none d-sm-block" style="color:#1f1515;"
+                                                               t-attf-href="/web#action=base.action_view_base_language_install&amp;website_id=#{website.id if website else ''}&amp;url_return=#{url_return}">
+                                                                <i class="fa fa-plus-circle"/>
+                                                                Add a language...
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="header__top__right__auth">
+                                            <div class="authorization-link" data-label="or"
+                                                 t-if="user_id._is_public()">
+                                                <a href="/web/login">Sign in</a>
+                                            </div>
+                                            <div class="dropdown" t-ignore="true"
+                                                 t-if="not user_id._is_public()">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <b>
+                                                        <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"
+                                                              class="d-none d-sm-inline"/>
+                                                        <span class="caret"></span>
+                                                    </b>
+                                                </a>
+                                                <ul class="dropdown-menu js_usermenu" role="menu"
+                                                    style="top: 15% !important; left: -112px !important;">
+                                                    <li class="dropdown-item">
+                                                        <a href="/my/home" role="menuitem">My Account</a>
+                                                    </li>
+                                                    <li class="dropdown-item" id="o_logout">
+                                                        <a t-attf-href="/web/session/logout?redirect=/"
+                                                           role="menuitem">
+                                                            Logout
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="header__logo">
+                                    <a href="#">
+                                        <span t-field="res_company.logo" t-options="{'widget': 'image'}"
+                                              t-att-alt="'Logo of %s' % res_company.name"
+                                              t-att-title="res_company.name"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-lg-7">
+                                <nav class="header__menu">
+                                    <ul>
+                                        <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                            <t t-call="website.submenu">
+                                                <t t-set="item_class" t-value="'nav-item'"/>
+                                                <t t-set="link_class" t-value="'nav-link'"/>
+                                            </t>
+                                        </t>
+
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="header__cart">
+                                    <ul>
+                                        <li>
+                                            <t t-if="request.website.viewref('website_sale_wishlist.add_to_wishlist').active">
+                                                <t t-set='wishcount'
+                                                   t-value="len(request.env['product.wishlist'].current())"/>
+                                                <li class="nav-item o_wsale_my_wish" style="display: inline-block;"
+                                                    t-att-style="not wishcount">
+                                                    <a href="/shop/wishlist" class="nav-link">
+                                                        <i class="fa fa-heart"></i>
+                                                        <sup t-attf-class="my_wish_quantity o_animate_blink badge badge-primary">
+                                                            <t t-esc='wishcount'/>
+                                                        </sup>
+                                                    </a>
+                                                </li>
+                                            </t>
+                                            <!--                                <a href="#">-->
+                                            <!--                                    <i class="fa fa-heart"></i>-->
+                                            <!--                                    <span>1</span>-->
+                                            <!--                                </a>-->
+                                        </li>
+                                        <li>
+                                            <t t-set="website_sale_order" t-value="website.sale_get_order()"/>
+                                            <li class="nav-item divider d-none"/>
+                                            <li t-attf-class="nav-item o_wsale_my_cart #{'' if website_sale_order and website_sale_order.cart_quantity else 'd-none'}">
+                                                <a href="/shop/cart" class="nav-link">
+                                                    <i class="fa fa-shopping-cart"></i>
+                                                    <sup t-attf-class="my_cart_quantity badge badge-primary"
+                                                         t-esc="website_sale_order and website_sale_order.cart_quantity or ''"/>
+                                                </a>
+                                            </li>
+                                        </li>
+
+                                    </ul>
+                                    <div class="header__cart__price">item:
+                                        <t t-if="website_sale_order.amount_total &gt; 0">
+                                            <span>
+                                                <t t-esc="website_sale_order.amount_total" class="monetary_field"
+                                                   t-options="{'widget': 'monetary', 'display_currency': website_sale_order.pricelist_id.currency_id}"/>
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-esc="website.currency_id.symbol"/>
+                                            0.00
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div onClick="testFn()" class="humberger__open">
+                            <i class="fa fa-bars"></i>
+                        </div>
+                    </div>
+                </header>
+                <!-- Header Section End -->
+            </xpath>
+        </template>
+
+
+        <template id="theme_footer_petonline" inherit_id="website.footer_custom" name="Petonline Footer">
+            <xpath expr="//div[@id='footer']" position="replace">
+                <footer class="footer spad">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="footer__about">
+                                    <div class="footer__about__logo">
+                                        <a t-att-href="res_company.website">
+                                            <span t-field="res_company.logo" t-options="{'widget': 'image'}"
+                                                  t-att-alt="'Logo of %s' % res_company.name"
+                                                  t-att-title="res_company.name"/>
+                                        </a>
+                                    </div>
+                                    <ul>
+                                        <li><span t-field="res_company.street"/>,
+                                            <span t-field="res_company.city"/>
+                                        </li>
+                                        <li><span t-field="res_company.state_id.name"/>,
+                                            <span t-field="res_company.country_id.name"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="res_company.phone"/>
+                                        </li>
+                                        <li>
+                                            <span t-field="res_company.email"/>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                                <div class="footer__widget">
+                                    <h6>Useful Links</h6>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">New Products</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Specials</a>
+                                        </li>
+                                        <li>
+                                            <a href="/shop">Shop</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Reviews</a>
+                                        </li>
+                                        <li>
+                                            <a href="/contactus">Contact</a>
+                                        </li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Privacy Pollicy</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Faqs</a>
+                                        </li>
+                                        <li>
+                                            <a href="/contactus">Sitemap</a>
+                                        </li>
+                                        <li>
+                                            <a t-att-href="res_company.website">Who We Are</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Innovation</a>
+                                        </li>
+                                        <li>
+                                            <a href="/shop">Secure Shopping</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="footer__widget">
+                                    <h6>Join Our Newsletter Now</h6>
+                                    <p>Get E-mail updates about our latest shop and special offers.</p>
+                                    <form action="#">
+                                        <input type="text" placeholder="Enter your mail"/>
+                                        <button type="submit" class="site-btn">Subscribe</button>
+                                    </form>
+                                    <div class="footer__widget__social">
+                                        <ul>
+                                            <li class="ts-facebook">
+                                                <a t-att-href="website.social_facebook"
+                                                   t-if="website.social_facebook">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li class="ts-twitter">
+                                                <a t-att-href="website.social_twitter"
+                                                   t-if="website.social_twitter">
+                                                    <i class="fa fa-twitter"></i>
+                                                </a>
+
+                                            </li>
+                                            <li class="ts-instagram">
+                                                <a t-att-href="website.social_instagram"
+                                                   t-if="website.social_instagram">
+                                                    <i class="fa fa-instagram"></i>
+                                                </a>
+                                            </li>
+                                            <li class="ts-youtube-play">
+                                                <a t-att-href="website.social_youtube"
+                                                   t-if="website.social_youtube">
+                                                    <i class="fa fa-youtube"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </xpath>
+        </template>
+        <template id="footer_copyright_pet_online" inherit_id="website.layout" name="Pet Online Copyright">
+            <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+                <div class="container-fluid footer spad">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="footer__copyright">
+                                    <div class="footer__copyright__text">
+                                        <p>
+                                            Copyright &amp;copy; All rights reserved | Powered by
+                                            <a href="https://technaureus.com" target="_blank" style="color: green;">
+                                                technaureus pvt
+                                                ltd
+                                            </a>
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
